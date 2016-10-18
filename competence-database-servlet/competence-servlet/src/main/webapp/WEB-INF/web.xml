@@ -1,0 +1,124 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Competence Database Rest Server</display-name>
+
+    <servlet>
+        <!--suppress ServletWithoutMappingInspection -->
+        <servlet-name>rest-server</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>uzuzjmd.competence</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>
+                uzuzjmd.competence
+            </param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+ <!--       <init-param>
+            <param-name>com.sun.jersey.config.feature.DisableWADL</param-name>
+            <param-value>true</param-value>
+        </init-param>-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>swagger</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>
+                io.swagger.jaxrs.listing.ApiListingResource,
+                io.swagger.jaxrs.listing.SwaggerSerializers,
+                uzuzjmd.competence.service.rest.ProgressApiImpl
+                uzuzjmd.competence.service.rest.ActivityApiImpl
+                uzuzjmd.competence.service.rest.CompetenceApiImpl
+                uzuzjmd.competence.service.rest.CompetenceServiceRestJSON
+                uzuzjmd.competence.service.rest.CourseApiImpl
+                uzuzjmd.competence.service.rest.EvidenceApiImpl
+                uzuzjmd.competence.service.rest.LearningTemplateApiImpl
+                uzuzjmd.competence.service.rest.ProgressApiImpl
+                uzuzjmd.competence.service.rest.RecommenderApiImpl
+                uzuzjmd.competence.service.rest.UserApiImpl
+            </param-value>
+        </init-param>
+    </servlet>
+
+
+    <servlet>
+        <!--suppress ServletWithoutMappingInspection -->
+        <servlet-name>swagger-config</servlet-name>
+        <servlet-class>io.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
+        <init-param>
+            <param-name>api.version</param-name>
+            <param-value>1.0.0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>swagger.api.basepath</param-name>
+            <param-value>http://fleckenroller.cs.uni-potsdam.de/app/competence-base-prod</param-value>
+            <!--<param-value>http://localhost:8080/competence-base</param-value>-->
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>swagger</servlet-name>
+        <url-pattern>/doku/*</url-pattern>
+    </servlet-mapping>
+
+
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+        <init-param>
+            <param-name>cors.allowed.origins</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.methods</param-name>
+            <param-value>GET,DELETE,POST,HEAD,OPTIONS,PUT</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.headers</param-name>
+            <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.exposed.headers</param-name>
+            <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.support.credentials</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.preflight.maxage</param-name>
+            <param-value>10</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+ <!--   <servlet-mapping>
+        <servlet-name>rest-server</servlet-name>
+        <url-pattern>/swagger/*</url-pattern>
+    </servlet-mapping>-->
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>
+
+	

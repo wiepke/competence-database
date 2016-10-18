@@ -1,0 +1,21 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:element name="DESCRIPTORSET" type="DESCRIPTORSETType"/>
+  <xs:complexType name="DESCRIPTORType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="COMPETENCE" use="optional"/>
+        <xs:attribute type="xs:string" name="LEVEL" use="optional"/>
+        <xs:attribute type="xs:string" name="EVALUATIONS" use="optional"/>
+        <xs:attribute type="xs:byte" name="GOAL" use="optional"/>
+        <xs:attribute type="xs:string" name="NAME" use="optional"/>
+        <xs:attribute type="xs:string" name="LINK" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="DESCRIPTORSETType">
+    <xs:sequence>
+      <xs:element type="DESCRIPTORType" name="DESCRIPTOR" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="NAME"/>
+  </xs:complexType>
+</xs:schema>

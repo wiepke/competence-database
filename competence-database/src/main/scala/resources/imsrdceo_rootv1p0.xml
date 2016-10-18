@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:rdceo xmlns:p="http://www.imsglobal.org/xsd/imsrdceo_rootv1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsrdceo_rootv1p0 imsrdceo_rootv1p0.xsd ">
+  <p:identifier>http://tempuri.org</p:identifier>
+  <p:title>
+    <p:langstring>BeispielKompetenz</p:langstring>
+  </p:title>
+  <p:description>
+    <p:langstring>Entscheidende Struktur der Beispielkompetenz</p:langstring>
+  </p:description>
+  <p:definition>
+    <p:model>Kompetenzmodell</p:model>
+    <p:statement statementid="idvalue0" statementname="">
+      <p:statementtext>
+        <p:langstring>Wissen</p:langstring>
+        <p:langstring>Anwendungskontext</p:langstring>
+        <p:langstring>Überprüfbarkeit</p:langstring>
+        <p:langstring>Teilkompetenzen</p:langstring>
+        <p:langstring>Teilerfolge</p:langstring>
+      </p:statementtext>
+    </p:statement>
+  </p:definition>
+  <p:metadata>
+    <p:rdceoschema>p:rdceoschema</p:rdceoschema>
+    <p:rdceoschemaversion>p:rdceoschemaversion</p:rdceoschemaversion>
+  </p:metadata>
+</p:rdceo>
+
