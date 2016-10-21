@@ -1,0 +1,25 @@
+#competenceCreation{
+
+}
+
+#outerPanel1{
+    padding: 15px;
+}
+
+#competenceCreatebutton {
+    margin: 10px;
+}
+
+#verbInput {
+    margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: middle !important;
+}
+
+#createSuccessMessage {
+    visibility: hidden;
+}
+
+#verbInput2{
+    width: 80px;
+}

@@ -1,0 +1,119 @@
+
+<?php
+
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/lib.php');
+
+?>
+<script type='text/javascript' src='js/jquery3.1.1.js'> </script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+<script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="css/competenceCreation.css"/>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+
+<script type='text/javascript' src='js/config.js'> </script>
+<script type='text/javascript' src='js/createCompetence.js'> </script>
+<script type='text/javascript' src='js/typeahead.js'> </script>
+
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<?php
+
+$id = optional_param('id', 0, PARAM_INT); // course_module ID, or
+$n = optional_param('n', 0, PARAM_INT);  // competence instance ID - it should be named as the first character of the module
+
+if ($id) {
+    $cm = get_coursemodule_from_id('competence', $id, 0, false, MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+    $competence = $DB->get_record('competence', array('id' => $cm->instance), '*', MUST_EXIST);
+} elseif ($n) {
+    $competence = $DB->get_record('competence', array('id' => $n), '*', MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $competence->course), '*', MUST_EXIST);
+    $cm = get_coursemodule_from_instance('competence', $competence->id, $course->id, false, MUST_EXIST);
+} else {
+    error('You must specify a course_module ID or an instance ID');
+}
+
+require_login($course, true, $cm);
+$context = context_module::instance($cm->id);
+add_to_log($course->id, 'competence', 'view', "view.php?id={$cm->id}", $competence->name, $cm->id);
+
+/// Print the page header
+
+$PAGE->set_url('/mod/competence/view.php', array('id' => $cm->id));
+$PAGE->set_title(format_string($competence->name));
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_context($context);
+
+// other things you may want to set - remove if not needed
+//$PAGE->set_cacheable(false);
+//$PAGE->set_focuscontrol('some-html-id');
+//$PAGE->add_body_class('competence-'.$somevar);
+// Output starts here
+echo $OUTPUT->header();
+
+if ($competence->intro) { // Conditions to show the intro can change to look for own settings or whatever
+    echo $OUTPUT->box(format_module_intro('competence', $competence, $cm->id), 'generalbox mod_introbox', 'competenceintro');
+}
+
+// determining the role
+$roleString = "student";
+if (user_has_role_assignment($USER->id, 3)) {
+    $roleString = "teacher";
+}
+?>
+
+
+
+
+<h1>Lernziele verwalten</h1>
+
+
+<div class="panel panel-default" id="outerPanel1">
+
+<h2>Ein Lernziel anlegen</h2>
+
+<div id="competenceCreation">
+  <span>Die Schüler/Studierenden</span>
+  <input id="verbInput" class="typeahead" type="text" placeholder="können....">
+  <textarea id="detailsInput" rows="3" placeholder="Lerngegenstand..."></textarea>
+  <input type="text"  id="verbInput2">.</input>
+  </br>
+  <h4>Tags<h4>
+  <input   type="text" id="tagsInput" placeholder="Schlagwort1...."></input>
+  </br>
+  <button id="competenceCreateButton" type="button" class="btn btn-default">anlegen</button>
+</div>
+
+<div id="createSuccessMessage" class="alert alert-success" role="alert">
+        <strong>Sehr gut!</strong> Das Lernziel wurde angelegt.
+</div>
+
+<div>
+
+<!-- the actual implementation start-->
+
+
+
+
+
+
+<!-- the actual implementation finish -->
+<?php
+echo $OUTPUT->footer();
