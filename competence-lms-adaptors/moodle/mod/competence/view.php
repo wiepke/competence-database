@@ -5,11 +5,12 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 
 ?>
+
+
 <script type='text/javascript' src='js/jquery3.1.1.js'> </script>
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
 <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
-
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -17,12 +18,10 @@ require_once(dirname(__FILE__) . '/lib.php');
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-<link rel="stylesheet" type="text/css" href="css/competenceCreation.css"/>
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-
+<link rel="stylesheet" type="text/css" href="css/competenceCreation.css"/>
 
 <script type='text/javascript' src='js/config.js'> </script>
 <script type='text/javascript' src='js/createCompetence.js'> </script>
@@ -85,7 +84,7 @@ if (user_has_role_assignment($USER->id, 3)) {
 <h1>Lernziele verwalten</h1>
 
 
-<div class="panel panel-default" id="outerPanel1">
+<div class="panel panel-default outerPanel" id="outerPanel1">
 
 <h2>Ein Lernziel anlegen</h2>
 
@@ -94,19 +93,53 @@ if (user_has_role_assignment($USER->id, 3)) {
   <input id="verbInput" class="typeahead" type="text" placeholder="können....">
   <textarea id="detailsInput" rows="3" placeholder="Lerngegenstand..."></textarea>
   <input type="text"  id="verbInput2">.</input>
-  </br>
   <h4>Tags<h4>
-  <input   type="text" id="tagsInput" placeholder="Schlagwort1...."></input>
-  </br>
-  <button id="competenceCreateButton" type="button" class="btn btn-default">anlegen</button>
+  <input type="text" id="tagsInput" placeholder="Schlagwort1...."></input>
+  <h4>Vorgeschlagene Aktivitäten</h4>
+  <ul class="list-group checked-list-box" id="activityList">
+      <li class="list-group-item">Cras justo odio</li>
+      <li class="list-group-item" data-checked="true">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                    <li class="list-group-item">Cras justo odio</li>
+  </ul>
+
+   <h4>Vorgeschlagene Badges</h4>
+    <ul class="list-group checked-list-box" id="badgesList">
+        <li class="list-group-item">Cras justo odio</li>
+        <li class="list-group-item" data-checked="true">Dapibus ac facilisis in</li>
+    </ul>
+
+    <h4>Reflexionsfragen</h4>
+    <input id="tagsInput2" rows="10" placeholder="Glaubst du, du hast alle Voraussetzungen für dieses Lernziel erfüllt?..."></input>
+    </br>
+    <label for="defaultQuestions">Default Fragen hinzufügen?</label>
+    <input id="defaultQuestions" type="checkbox" checked>
+    </br>
+    </br>
+  <button id="competenceCreateButton" type="button" class="btn btn-primary">anlegen</button>
 </div>
 
 <div id="createSuccessMessage" class="alert alert-success" role="alert">
         <strong>Sehr gut!</strong> Das Lernziel wurde angelegt.
 </div>
 
-<div>
+</div>
 
+<div class="panel panel-default outerPanel" id="outerPanel2">
+    <h2>Bestehende Lernziele bearbeiten</h2>
+        <ul class="list-group checked-list-box" id="competenceList">
+          <li class="list-group-item">Cras justo odio</li>
+          <li class="list-group-item" data-checked="true">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Morbi leo risus</li>
+                        <li class="list-group-item">Porta ac consectetur ac</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                        <li class="list-group-item">Cras justo odio</li>
+        </ul>
+        <br>
+        <button id="competenceDeleteButton" type="button" class="btn btn-primary">löschen</button>
+</div>
 <!-- the actual implementation start-->
 
 

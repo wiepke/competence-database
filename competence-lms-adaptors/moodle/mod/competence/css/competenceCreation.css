@@ -1,8 +1,13 @@
-#competenceCreation{
+#competenceCreation {
 
 }
 
-#outerPanel1{
+.tagsInput2 {
+    width: 600px !important;
+    height: 400px !important;
+}
+
+.outerPanel {
     padding: 15px;
 }
 
@@ -20,6 +25,25 @@
     visibility: hidden;
 }
 
-#verbInput2{
+#verbInput2 {
     width: 80px;
+}
+
+/* CSS REQUIRED */
+.state-icon {
+    left: -5px;
+}
+
+.list-group-item-primary {
+    color: rgb(255, 255, 255);
+    background-color: rgb(66, 139, 202);
+}
+
+/* DEMO ONLY - REMOVES UNWANTED MARGIN */
+.well .list-group {
+    margin-bottom: 0px;
+}
+
+ul {
+    margin-left: 0px !important;
 }
