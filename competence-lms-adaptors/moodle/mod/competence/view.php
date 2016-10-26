@@ -1,32 +1,25 @@
 
 <?php
-
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
-
 ?>
 
-
-<script type='text/javascript' src='js/jquery3.1.1.js'> </script>
-
+<script type='text/javascript' src='js/lib/jquery3.1.1.js'> </script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
 <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
-
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
 <link rel="stylesheet" type="text/css" href="css/competenceCreation.css"/>
-
+<script type='text/javascript' src='js/lib/typeahead.js'> </script>
 <script type='text/javascript' src='js/config.js'> </script>
 <script type='text/javascript' src='js/createCompetence.js'> </script>
-<script type='text/javascript' src='js/typeahead.js'> </script>
-
+<script type='text/javascript' src='js/UIFunctions.js'> </script>
+<script type='text/javascript' src='js/typeaheads.js'> </script>
+<script type='text/javascript' src='js/ajax.js'> </script>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -78,7 +71,10 @@ if (user_has_role_assignment($USER->id, 3)) {
 }
 ?>
 
-
+<h1>Kompetenzen aus der COMPBASE</h1>
+<div id="response"></div>
+<h1>Kompetenz wurde erstellt?</h1>
+<div id="response2"></div>
 
 
 <h1>Lernziele verwalten</h1>
@@ -112,7 +108,7 @@ if (user_has_role_assignment($USER->id, 3)) {
     </ul>
 
     <h4>Reflexionsfragen</h4>
-    <input id="tagsInput2" rows="10" placeholder="Glaubst du, du hast alle Voraussetzungen für dieses Lernziel erfüllt?..."></input>
+    <input id="tagsInput" rows="10" placeholder="Glaubst du, du hast alle Voraussetzungen für dieses Lernziel erfüllt?..."></input>
     </br>
     <label for="defaultQuestions">Default Fragen hinzufügen?</label>
     <input id="defaultQuestions" type="checkbox" checked>
@@ -122,7 +118,11 @@ if (user_has_role_assignment($USER->id, 3)) {
 </div>
 
 <div id="createSuccessMessage" class="alert alert-success" role="alert">
-        <strong>Sehr gut!</strong> Das Lernziel wurde angelegt.
+              <strong>Sehr gut!</strong> Das Lernziel wurde angelegt.
+</div>
+
+<div id="createErrorMessage" class="alert alert-error" role="alert">
+        Es wurden nicht alle Felder ausgefüllt.
 </div>
 
 </div>
