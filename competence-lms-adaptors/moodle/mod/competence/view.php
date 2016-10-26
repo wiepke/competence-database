@@ -2,8 +2,10 @@
 <?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
-?>
 
+
+// ............................... the header and includes ...................................................
+?>
 <script type='text/javascript' src='js/lib/jquery3.1.1.js'> </script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
 <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
@@ -14,6 +16,7 @@ require_once(dirname(__FILE__) . '/lib.php');
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="css/competenceCreation.css"/>
+
 <script type='text/javascript' src='js/lib/typeahead.js'> </script>
 <script type='text/javascript' src='js/config.js'> </script>
 <script type='text/javascript' src='js/createCompetence.js'> </script>
@@ -26,6 +29,9 @@ require_once(dirname(__FILE__) . '/lib.php');
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <?php
+// ............................... END the header and includes ...................................................
+
+// weird settings part 1
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n = optional_param('n', 0, PARAM_INT);  // competence instance ID - it should be named as the first character of the module
@@ -46,30 +52,52 @@ require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 add_to_log($course->id, 'competence', 'view', "view.php?id={$cm->id}", $competence->name, $cm->id);
 
-/// Print the page header
 
+
+// INTERESTING DATA FOR THE APP .............................................................
+
+$roleString = "'student'";
+if (user_has_role_assignment($USER->id, 3)) {
+       $roleString = "'teacher'";
+}
+
+$courseId =  "'".$id."'";
+$courseName =  "'".$COURSE->fullname."'";
+
+// TODO get activitäten
+
+// and writing it to javascript
+?>
+<script type="text/javascript">
+var role = <?php echo $roleString; ?>;
+var courseId = <?php echo $courseId; ?>;
+var courseName = <?php echo $courseName; ?>;
+
+</script>
+<?php
+
+// INTERESTING DATA FOR THE APP ..............................................................
+
+
+
+// .......... weird settings  part 2............................................
+
+
+
+/// Print the page header
 $PAGE->set_url('/mod/competence/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($competence->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
-
-// other things you may want to set - remove if not needed
-//$PAGE->set_cacheable(false);
-//$PAGE->set_focuscontrol('some-html-id');
-//$PAGE->add_body_class('competence-'.$somevar);
-// Output starts here
 echo $OUTPUT->header();
-
 if ($competence->intro) { // Conditions to show the intro can change to look for own settings or whatever
     echo $OUTPUT->box(format_module_intro('competence', $competence, $cm->id), 'generalbox mod_introbox', 'competenceintro');
 }
-
-// determining the role
-$roleString = "student";
-if (user_has_role_assignment($USER->id, 3)) {
-    $roleString = "teacher";
-}
+// .......... END weird settings............................................
 ?>
+
+
+<!-- ............................... the HTML ............................................-->
 
 <h1>Kompetenzen aus der COMPBASE</h1>
 <div id="response"></div>
@@ -149,4 +177,6 @@ if (user_has_role_assignment($USER->id, 3)) {
 
 <!-- the actual implementation finish -->
 <?php
+
+// ............................... END the HTML ............................................
 echo $OUTPUT->footer();

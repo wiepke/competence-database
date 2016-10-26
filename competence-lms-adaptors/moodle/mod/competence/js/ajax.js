@@ -44,5 +44,55 @@ $(document).ready(function () {
             console.log("competence created");
             document.getElementById('response2').innerHTML = c.statusText;
         });
+
+        // real implementation
+
+        $('#competenceCreateButton').click(function () {
+            var value1 = $("#verbInput").val();
+            var value2 = $("#verbInput2").val();
+            var competenceString = "Die S. " + value1 + " " + $("#detailsInput").val() + " " + value2;
+            var operator = value2 + value1;
+            var catchwords = $('#tagsInput').tagsinput('items')
+            // api call
+            if (!Boolean(value1) || !Boolean(value2) || !Boolean(competenceString) || !Boolean(operator) || catchwords.length == 0) {
+                $('#createSuccessMessage').hide();
+                $('#createErrorMessage').show();
+            } else {
+                $('#createErrorMessage').hide();
+                $('#createSuccessMessage').show();
+            }
+
+            var competenceOpts2 = {
+                "operator": operator,
+                "catchwords": catchwords,
+                "superCompetences": [],
+                "subCompetences": [],
+                "learningProjectName": "Test"
+            }
+            api.addCompetence(competenceString, {body: competenceOpts}, function (a, b, c) {
+                if (c.statusText == "OK") {
+                    console.log("competence created");
+                    var courseBody =  {
+                        body: {
+                            "courseId": "string",
+                            "printableName": courseName,
+                            "competences": [
+                                competenceString
+                            ]
+                        }
+                    };
+                    api.addCourse(courseId,courseBody, function(a,b,c){
+                        if (c.statusText == "OK") {
+                            $('#createSuccessMessage').show();
+                        } else {
+                            $('#createErrorMessage').show();
+                        }
+                    });
+                } else {
+                    $('#createErrorMessage').show();
+                }
+            });
+        });
+
     });
 });
