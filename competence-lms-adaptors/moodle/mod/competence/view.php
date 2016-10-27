@@ -35,6 +35,7 @@ require_once(dirname(__FILE__) . '/lib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n = optional_param('n', 0, PARAM_INT);  // competence instance ID - it should be named as the first character of the module
+$cm = null;
 
 if ($id) {
     $cm = get_coursemodule_from_id('competence', $id, 0, false, MUST_EXIST);
@@ -47,6 +48,8 @@ if ($id) {
 } else {
     error('You must specify a course_module ID or an instance ID');
 }
+
+//$modinfo = mod_frog_get_coursemodule_info($cm);
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
@@ -64,6 +67,34 @@ if (user_has_role_assignment($USER->id, 3)) {
 $courseId =  "'".$id."'";
 $courseName =  "'".$COURSE->fullname."'";
 
+// get the activities
+$query = 'SELECT {log}.*,firstname,lastname,username,email,lastaccess FROM {log} , {user} INNER JOIN {role_assignments} ra ON ra.userid = {user}.id INNER JOIN {context} ct ON ct.id = ra.contextid INNER JOIN {course} c ON c.id = ct.instanceid INNER JOIN {role} r ON r.id = ra.roleid INNER JOIN {course_categories} cc ON cc.id = c.category WHERE {log}.userid = {user}.id AND {log}.course= ? ORDER BY time DESC';
+$result = $DB->get_records_sql($query, array($courseId));
+  $mapper = function ($arrayElement) {
+      return array(
+           'url' => "/mod/" . $arrayElement->module . "/" . $arrayElement->url,
+           "username" => $arrayElement->username,
+           'changed' => $arrayElement->lastaccess,
+           'activityTyp' => $arrayElement->module,
+           'email' => $arrayElement->email
+      );
+   };
+$result_mapped = array_map($mapper, $result);
+$activities = "'".json_encode($result_mapped)."'";
+
+// get the modules
+$modinfo = get_fast_modinfo($COURSE->id);
+$infoMapper = function ($arrayElement) {
+      return array(
+           "url" => "/mod/".$arrayElement->modname."/view.php?id=".$arrayElement->id,
+           'name' => $arrayElement->name,
+           "modname" => $arrayElement->modname
+      );
+   };
+$modinfo_mapped = array_map($infoMapper, $modinfo->cms);
+$info = "'".json_encode(array_values($modinfo_mapped))."'";
+
+
 // TODO get activitäten
 
 // and writing it to javascript
@@ -72,6 +103,8 @@ $courseName =  "'".$COURSE->fullname."'";
 var role = <?php echo $roleString; ?>;
 var courseId = <?php echo $courseId; ?>;
 var courseName = <?php echo $courseName; ?>;
+var activities = <?php echo $activities; ?>;
+var courseModules = JSON.parse(<?php echo $info; ?>);
 
 </script>
 <?php
@@ -121,12 +154,6 @@ if ($competence->intro) { // Conditions to show the intro can change to look for
   <input type="text" id="tagsInput" placeholder="Schlagwort1...."></input>
   <h4>Vorgeschlagene Aktivitäten</h4>
   <ul class="list-group checked-list-box" id="activityList">
-      <li class="list-group-item">Cras justo odio</li>
-      <li class="list-group-item" data-checked="true">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                    <li class="list-group-item">Cras justo odio</li>
   </ul>
 
    <h4>Vorgeschlagene Badges</h4>

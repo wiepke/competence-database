@@ -1,6 +1,6 @@
-/**
- * Created by dehne on 20.10.2016.
- */
+
+var modulesSelected = {};
+
 $(document).ready(function () {
 
     $('#createErrorMessage').hide();
@@ -34,6 +34,29 @@ $(document).ready(function () {
         });
         $('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
     });
+
+    for (i = 0; i < courseModules.length; i++) {
+        var label = courseModules[i].name;
+        if (courseModules[i].modname != "competence") {
+            $('#activityList').append("<li class=\"list-group-item\" id=\"activity"+i+"\">" + label + "</li>");
+        }
+    }
+
+    if (courseModules.length == 0) {
+        $('#activityList').append("<li class=\"list-group-item\" id=\"activity"+i+"\">" + "Es wurden noch keine Aktivitäten angelegt" + "</li>");
+    }
+
+    for (i = 0; i < courseModules.length; i++) {
+        if (courseModules[i].modname != "competence") {
+            $('#activity'+i).click(function(){
+                var indexClicked = this.id.replace("activity","");
+                modulesSelected[indexClicked] = !modulesSelected[indexClicked];
+                console.log(modulesSelected);
+            });
+        }
+    }
+
+    //$('#activityList').append("<li class=\"list-group-item\">"+courseModules.length+"</li>");
 
 });
 
