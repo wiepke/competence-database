@@ -58,7 +58,7 @@ $(document).ready(function () {
 
     $('#defaultQuestionsAdder').click(function(){
         $('#questionsArea').text(
-            "Wie motiviert bist du das Lernziel zu erreichen?,Warum möchtest du das Lernziel erreichen?,Welches Vorwissen hast du, welches dir zum Erreichen des Ziels dient?,Was wird ein Ergebnis deines Lernens sein?,Wie möchtest du das Lernziel erreichen?,Wen kannst du Fragen, wenn du nicht weiterkommst?,Kannst du einfach im Internet suchen um weiterzukommen?,Findest du, dass das Lernziel zu einfach ist?"
+            "Wie motiviert bist du das Lernziel zu erreichen?;Warum möchtest du das Lernziel erreichen?;Welches Vorwissen hast du, welches dir zum Erreichen des Ziels dient?;Was wird ein Ergebnis deines Lernens sein?;Wie möchtest du das Lernziel erreichen?;Wen kannst du Fragen, wenn du nicht weiterkommst?;Kannst du einfach im Internet suchen um weiterzukommen?;Findest du, dass das Lernziel zu einfach ist?"
         );
     });
 

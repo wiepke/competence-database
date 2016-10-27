@@ -64,7 +64,7 @@ $(document).ready(function () {
                 }
                 ;
 
-                api.addCompetence(competenceString, {body: competenceOpts}, function (a, b, c) {
+                api.addCompetence(competenceString, {body: competenceOpts2}, function (a, b, c) {
                     if (c.statusText == "OK") {
                         console.log("competence created");
                         var courseBody = {
@@ -81,11 +81,20 @@ $(document).ready(function () {
                                 for (i = 0; i < activitiesSuggested.length; i++) {
                                     var activityToSend = activitiesSuggested[i];
                                     api.addActivity({body: activityToSend}, function (a, b, c) {
-                                        for (i = 0; i < activitiesSuggested.length; i++) {
-                                            var activityToSend2 = activitiesSuggested[i];
+                                        for (y = 0; y < activitiesSuggested.length; y++) {
+                                            var activityToSend2 = activitiesSuggested[y];
                                             api.addActivity_0(competenceString, activityToSend2, function (a, b, c) {
-                                                console.info("activity has been added");
-                                                $('#createSuccessMessage').show();
+                                                var questions = $('#questionsArea').text().split(";");
+                                                for (x=0;x<questions.length;x++) {
+                                                    var question = {
+                                                        "question": questions[x],
+                                                        "competenceId": competenceString
+                                                    };
+                                                    api.addReflectiveQuestionToCompetence({"body": question}, function(a,b,c){
+                                                        console.info("activity has been added");
+                                                        $('#createSuccessMessage').show();
+                                                    });
+                                                }
                                             });
                                         }
                                     });
