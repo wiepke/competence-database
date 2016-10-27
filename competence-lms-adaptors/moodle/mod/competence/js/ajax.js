@@ -21,33 +21,13 @@ $(document).ready(function () {
         console.log(main);
         var apiClient = new main.ApiClient();
         //apiClient.basePath = 'http://fleckenroller.cs.uni-potsdam.de/app/competence-base';
-        apiClient.basePath = 'http://localhost:8080/competence-base';
+        apiClient.basePath = serverUrl;
         var api = new main.DefaultApi(apiClient);
         console.log(apiClient);
-        api.getCompetences({}, function (error, data, response) {
-            console.log(error, data);
-            console.log(response.body);
-            document.getElementById('response').innerHTML = response.text;
-        });
 
-        // add a Competence to the api
-        var competenceOpts = {
-            "operator": "laufen",
-            "catchwords": [
-                "laufen", "gehen"
-            ],
-            "superCompetences": [],
-            "subCompetences": [],
-            "learningProjectName": "Test"
-        }
-        api.addCompetence("Meine TestKompetenz", {body: competenceOpts}, function (a, b, c) {
-            console.log("competence created");
-            document.getElementById('response2').innerHTML = c.statusText;
-        });
-
-        // real implementation
 
         // ...............................................................................
+
         $('#competenceCreateButton').click(function () {
             var value1 = $("#verbInput").val();
             var value2 = $("#verbInput2").val();
@@ -106,7 +86,6 @@ $(document).ready(function () {
                                             api.addActivity_0(competenceString, activityToSend2, function (a, b, c) {
                                                 console.info("activity has been added");
                                                 $('#createSuccessMessage').show();
-
                                             });
                                         }
                                     });
@@ -121,6 +100,107 @@ $(document).ready(function () {
                 });
                 // $('#createSuccessMessage').show();
                 // ...............................................................................
+            }
+        });
+
+        // lernziele bearbeiten
+
+        api.getCompetences({"courseId": courseId}, function (error, data, response) {
+            var competences = response.body;
+            for (i = 0; i < competences.length; i++) {
+                var competencePointed = competences[i];
+                $('#competenceList').append("<li class=\"list-group-item\" id=\"competence"+i+"\">" + competencePointed + "</li>");
+            }
+
+            /// und noch UI stuff
+
+            // http://bootsnipp.com/snippets/featured/checked-list-group
+            $('.list-group.checked-list-box .list-group-item').each(function () {
+
+                // Settings
+                var $widget = $(this),
+                    $checkbox = $('<input type="checkbox" class="hidden" />'),
+                    color = ($widget.data('color') ? $widget.data('color') : "primary"),
+                    style = ($widget.data('style') == "button" ? "btn-" : "list-group-item-"),
+                    settings = {
+                        on: {
+                            icon: 'glyphicon glyphicon-check'
+                        },
+                        off: {
+                            icon: 'glyphicon glyphicon-unchecked'
+                        }
+                    };
+
+                $widget.css('cursor', 'pointer')
+                $widget.append($checkbox);
+
+                // Event Handlers
+                $widget.on('click', function () {
+                    $checkbox.prop('checked', !$checkbox.is(':checked'));
+                    $checkbox.triggerHandler('change');
+                    updateDisplay();
+                });
+                $checkbox.on('change', function () {
+                    updateDisplay();
+                });
+
+
+                // Actions
+                function updateDisplay() {
+                    var isChecked = $checkbox.is(':checked');
+
+                    // Set the button's state
+                    $widget.data('state', (isChecked) ? "on" : "off");
+
+                    // Set the button's icon
+                    $widget.find('.state-icon')
+                        .removeClass()
+                        .addClass('state-icon ' + settings[$widget.data('state')].icon);
+
+                    // Update the button's color
+                    if (isChecked) {
+                        $widget.addClass(style + color + ' active');
+                    } else {
+                        $widget.removeClass(style + color + ' active');
+                    }
+                }
+
+                // Initialization
+                function init() {
+
+                    if ($widget.data('checked') == true) {
+                        $checkbox.prop('checked', !$checkbox.is(':checked'));
+                    }
+
+                    updateDisplay();
+
+                    // Inject the icon if applicable
+                    if ($widget.find('.state-icon').length == 0) {
+                        $widget.prepend('<span class="state-icon ' + settings[$widget.data('state')].icon + '"></span>');
+                    }
+                }
+
+                init();
+            });
+
+        });
+
+        // delete lernziele
+
+        $('#competenceDeleteButton').on('click', function(event) {
+            event.preventDefault();
+            var checkedItems = {}, counter = 0;
+            $("#competenceList li.active").each(function(idx, li) {
+                checkedItems[counter] = $(li).text();
+                counter++;
+            });
+            //$('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
+            var checkedItemsArr = Object.keys(checkedItems).map(function (key) { return checkedItems[key]; });
+            for (i = 0; i< checkedItemsArr.length;i++) {
+                var checkedItem = checkedItemsArr[i];
+                api.deleteCompetence(checkedItem, function(a,b,c) {
+                    window.location.reload(false);
+                });
             }
         });
     });

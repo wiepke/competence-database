@@ -20,9 +20,9 @@ require_once(dirname(__FILE__) . '/lib.php');
 <script type='text/javascript' src='js/lib/typeahead.js'> </script>
 <script type='text/javascript' src='js/config.js'> </script>
 <script type='text/javascript' src='js/createCompetence.js'> </script>
-<script type='text/javascript' src='js/UIFunctions.js'> </script>
-<script type='text/javascript' src='js/typeaheads.js'> </script>
 <script type='text/javascript' src='js/ajax.js'> </script>
+<script type='text/javascript' src='js/typeaheads.js'> </script>
+
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -132,12 +132,6 @@ if ($competence->intro) { // Conditions to show the intro can change to look for
 
 <!-- ............................... the HTML ............................................-->
 
-<h1>Kompetenzen aus der COMPBASE</h1>
-<div id="response"></div>
-<h1>Kompetenz wurde erstellt?</h1>
-<div id="response2"></div>
-
-
 <h1>Lernziele verwalten</h1>
 
 
@@ -155,18 +149,17 @@ if ($competence->intro) { // Conditions to show the intro can change to look for
   <h4>Vorgeschlagene Aktivitäten</h4>
   <ul class="list-group checked-list-box" id="activityList">
   </ul>
-
+    <!--
    <h4>Vorgeschlagene Badges</h4>
     <ul class="list-group checked-list-box" id="badgesList">
         <li class="list-group-item">Cras justo odio</li>
         <li class="list-group-item" data-checked="true">Dapibus ac facilisis in</li>
     </ul>
-
+    -->
     <h4>Reflexionsfragen</h4>
-    <input id="tagsInput" rows="10" placeholder="Glaubst du, du hast alle Voraussetzungen für dieses Lernziel erfüllt?..."></input>
+    <textarea id="questionsArea"  rows="10" placeholder="Frage1, Frage2...."></textarea>
     </br>
-    <label for="defaultQuestions">Default Fragen hinzufügen?</label>
-    <input id="defaultQuestions" type="checkbox" checked>
+    <button id="defaultQuestionsAdder" type="button" class="btn btn-secondary">Default Fragen hinzufügen</button>
     </br>
     </br>
   <button id="competenceCreateButton" type="button" class="btn btn-primary">anlegen</button>
@@ -185,12 +178,7 @@ if ($competence->intro) { // Conditions to show the intro can change to look for
 <div class="panel panel-default outerPanel" id="outerPanel2">
     <h2>Bestehende Lernziele bearbeiten</h2>
         <ul class="list-group checked-list-box" id="competenceList">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item" data-checked="true">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                        <li class="list-group-item">Cras justo odio</li>
+
         </ul>
         <br>
         <button id="competenceDeleteButton" type="button" class="btn btn-primary">löschen</button>
