@@ -65,7 +65,7 @@
         <init-param>
             <param-name>swagger.api.basepath</param-name>
             <param-value>http://fleckenroller.cs.uni-potsdam.de/app/competence-base-prod</param-value>
-            <!--<param-value>http://localhost:8080/competence-base</param-value>-->
+            <!-- <param-value>http://localhost:8080/competence-base</param-value>-->
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
