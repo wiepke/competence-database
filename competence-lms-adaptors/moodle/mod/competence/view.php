@@ -52,10 +52,7 @@ add_to_log($course->id, 'competence', 'view', "view.php?id={$cm->id}", $competen
 
 // INTERESTING DATA FOR THE APP .............................................................
 
-$roleString = "'student'";
-if (user_has_role_assignment($USER->id, 3)) {
-       $roleString = "'teacher'";
-}
+
 
 $courseId =  "'".$id."'";
 $courseName =  "'".$COURSE->fullname."'";
@@ -86,6 +83,27 @@ $infoMapper = function ($arrayElement) {
    };
 $modinfo_mapped = array_map($infoMapper, $modinfo->cms);
 $info = "'".json_encode(array_values($modinfo_mapped))."'";
+
+
+// get roles
+
+$roleString = "'undefined'";
+
+//$roleString = "'notgiven'";
+
+//if (user_has_role_assignment($USER->id, 3)) {
+//       $roleString = "'teacher'";
+//       echo $roleString;
+//}
+
+if (!$cm = get_coursemodule_from_id('competence', $cm->id)) {
+    error("Course module ID was incorrect");
+}
+
+if (has_capability('mod/competence:view', $context)) {
+       $roleString = "'teacher'";
+}
+
 
 
 // TODO get activitäten
@@ -120,13 +138,22 @@ if ($competence->intro) { // Conditions to show the intro can change to look for
     echo $OUTPUT->box(format_module_intro('competence', $competence, $cm->id), 'generalbox mod_introbox', 'competenceintro');
 }
 // .......... END weird settings............................................
+
+
+// role management
+
+
+
+
+
 ?>
 
 
 <!-- ............................... the HTML ............................................-->
 
-<h1>Lernziele verwalten</h1>
+<div id="competence-management-view">
 
+<h1>Lernziele verwalten</h1>
 
 <div class="panel panel-default outerPanel" id="outerPanel1">
 
@@ -150,7 +177,7 @@ if ($competence->intro) { // Conditions to show the intro can change to look for
     </ul>
     -->
     <h4>Reflexionsfragen</h4>
-    <textarea id="questionsArea"  rows="10" placeholder="Frage1, Frage2...."></textarea>
+    <textarea id="questionsArea"  rows="10" placeholder="Frage1; Frage2...."></textarea>
     </br>
     <button id="defaultQuestionsAdder" type="button" class="btn btn-secondary">Default Fragen hinzufügen</button>
     </br>
@@ -178,13 +205,19 @@ if ($competence->intro) { // Conditions to show the intro can change to look for
 </div>
 <!-- the actual implementation start-->
 
+</div>
 
-
+<div id="roleErrorMessage" class="alert alert-error" role="alert">
+        Sie müssen eine Lehrenden-Rolle haben, um diese Ansicht zu öffnen.
+</div>
 
 
 
 <!-- the actual implementation finish -->
+
+
 <?php
+
 
 // ............................... END the HTML ............................................
 echo $OUTPUT->footer();
