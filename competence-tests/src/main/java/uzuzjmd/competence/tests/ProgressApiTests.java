@@ -1,5 +1,6 @@
 package uzuzjmd.competence.tests;
 
+import config.MagicStrings;
 import datastructures.lists.StringList;
 import junit.framework.Assert;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -28,6 +29,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -45,11 +47,92 @@ public class ProgressApiTests extends JerseyTest {
                 CourseApiImpl.class, EvidenceApiImpl.class, EvidenceServiceRestServerImpl.class, ProgressApiImpl.class);
     }
 
+
+    public void createReflectiveQuestions() {
+        // assumes user exists
+
+        java.util.List<String> competences = createCompetences();
+        String[] questions = new String[] { "eine wichtige Frage?" ,  "eine wichtige Frage?2"};
+        ReflectiveQuestionData question = new ReflectiveQuestionData(questions[0],competences.get(0));
+        ReflectiveQuestionData question2 = new ReflectiveQuestionData(questions[1],competences.get(0));
+        ReflectiveQuestionData question3 = new ReflectiveQuestionData(questions[0],competences.get(1));
+        ReflectiveQuestionData question4 = new ReflectiveQuestionData(questions[1],competences.get(1));
+
+        // create questions
+        String questionCreationUrl = "/api1/competences/questions";
+        Response response = target(questionCreationUrl).request().post(Entity.entity(question, MediaType
+                .APPLICATION_JSON));
+        assertTrue(response.getStatus() == 200);
+
+        Response response2 = target(questionCreationUrl).request().post(Entity.entity(question2, MediaType
+                .APPLICATION_JSON));
+        assertTrue(response2.getStatus() == 200);
+
+        Response response3 = target(questionCreationUrl).request().post(Entity.entity(question3, MediaType
+                .APPLICATION_JSON));
+        assertTrue(response3.getStatus() == 200);
+
+        Response response4 = target(questionCreationUrl).request().post(Entity.entity(question4, MediaType
+                .APPLICATION_JSON));
+        assertTrue(response4.getStatus() == 200);
+
+        String[] answers = new String [] {"gute Antwort1" , "gute Antwort2"};
+        // create answers
+        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData = new ReflectiveQuestionAnswerData(answers[0],
+                user, questions[0], System.currentTimeMillis());
+
+        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData2 = new ReflectiveQuestionAnswerData(answers[1],
+                user, questions[0], System.currentTimeMillis());
+
+        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData3 = new ReflectiveQuestionAnswerData(answers[0],
+                user, questions[1], System.currentTimeMillis());
+
+        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData4 = new ReflectiveQuestionAnswerData(answers[1],
+                user, questions[1], System.currentTimeMillis());
+
+        java.util.List<ReflectiveQuestionAnswerData> answerDatas = new ArrayList<ReflectiveQuestionAnswerData>();
+        answerDatas.add(reflectiveQuestionAnswerData);
+        answerDatas.add(reflectiveQuestionAnswerData2);
+        answerDatas.add(reflectiveQuestionAnswerData3);
+        answerDatas.add(reflectiveQuestionAnswerData4);
+
+        for (ReflectiveQuestionAnswerData answerData : answerDatas) {
+            Response r = target("/api1/competences/questions/answers").request().put(Entity.entity(answerData, MediaType
+                    .APPLICATION_JSON));
+            assertTrue(r.getStatus() == 200);
+        }
+
+    }
+
+    public List<String> createCompetences()  {
+        ArrayList<String> result = new ArrayList<String>();
+        String competenceString = "Die Studierenden vergleichen zwei Sätze anhand ihrer Bausteine";
+        result.add(competenceString);
+        CompetenceData data =
+                new CompetenceData("vergleichen", Arrays.asList(new String[]{"vergleichen", "Sätze", "Bausteine"}),
+                        null, null, null, competenceString);
+        Response post = target("/api1/competences/" + competenceString).request()
+                .put(Entity.entity(data, MediaType.APPLICATION_JSON));
+        assertTrue(post.getStatus() == 200);
+        String competenceString2 = "Die Studierenden vergleichen drei Sätze anhand ihrer Bausteine";
+        result.add(competenceString2);
+        Response post1 = target("/api1/competences/" + competenceString2).request()
+                .put(Entity.entity(data, MediaType.APPLICATION_JSON));
+        assertTrue(post1.getStatus() == 200);
+        //Thread.sleep(3000l);
+//        java.util.List<String> result = target("/api1/competences/semblances/"+competenceString).request().get(java.util.List.class);
+//        assertTrue(result.contains(competenceString2));
+        return result;
+    }
+
     @Test
     public void createUserProgress() throws Exception {
         User userDao = new User(user);
         userDao.printableName = user;
         userDao.persist();
+
+        // create questions and answers for user
+        createReflectiveQuestions();
 
         // create evidence Link
         CompetenceLinksView competenceLinksView1 = new CompetenceLinksView();
@@ -168,4 +251,5 @@ public class ProgressApiTests extends JerseyTest {
     }
 
 }
+
 

@@ -22,6 +22,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,8 +49,10 @@ public class CoreTests extends JerseyTest {
     }
 
     //@Test
-    public void testSimilaritiesInterface() throws InterruptedException {
+   // public List<String> createCompetences()  {
+ /*       ArrayList<String> result = new ArrayList<String>();
         String competenceString = "Die Studierenden vergleichen zwei Sätze anhand ihrer Bausteine";
+        result.add(competenceString);
         CompetenceData data =
                 new CompetenceData("vergleichen", Arrays.asList(new String[]{"vergleichen", "Sätze", "Bausteine"}),
                         null, null, null, competenceString);
@@ -57,13 +60,15 @@ public class CoreTests extends JerseyTest {
                 .put(Entity.entity(data, MediaType.APPLICATION_JSON));
         assertTrue(post.getStatus() == 200);
         String competenceString2 = "Die Studierenden vergleichen drei Sätze anhand ihrer Bausteine";
+        result.add(competenceString2);
         Response post1 = target("/api1/competences/" + competenceString2).request()
                 .put(Entity.entity(data, MediaType.APPLICATION_JSON));
-        assertTrue(post1.getStatus() == 200);
-        Thread.sleep(3000l);
+        assertTrue(post1.getStatus() == 200);*/
+        //Thread.sleep(3000l);
 //        java.util.List<String> result = target("/api1/competences/semblances/"+competenceString).request().get(java.util.List.class);
 //        assertTrue(result.contains(competenceString2));
-    }
+   //     return result;
+    //}
 
     //@Test
     public void testLogin() {
