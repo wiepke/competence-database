@@ -17,7 +17,7 @@ public class ReflectiveQuestionAnswerAdaptor extends XmlAdapter<IReflectiveQuest
         String userId = iReflectiveQuestionAnswerData.getUserId();
         String questionId = iReflectiveQuestionAnswerData.getQuestionId();
         return new ReflectiveQuestionAnswerData(text,userId
-                , questionId, null);
+                , questionId, null, iReflectiveQuestionAnswerData.getCompetenceId());
     }
 
     @Override

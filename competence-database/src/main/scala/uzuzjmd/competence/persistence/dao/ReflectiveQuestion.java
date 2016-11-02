@@ -12,7 +12,7 @@ public class ReflectiveQuestion extends AbstractReflectiveQuestion {
 
     public ReflectiveQuestion(
             Competence competence, String question ) {
-        super(question,competence);
+        super(question+competence.getId(),competence);
         this.question = question;
     }
 
@@ -37,5 +37,10 @@ public class ReflectiveQuestion extends AbstractReflectiveQuestion {
             throw new Exception("competence does not exist in database");
          }
          return this;
+    }
+
+    @Override
+    public String getId() {
+        return super.getId();
     }
 }

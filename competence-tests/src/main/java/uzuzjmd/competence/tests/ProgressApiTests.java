@@ -1,6 +1,5 @@
 package uzuzjmd.competence.tests;
 
-import config.MagicStrings;
 import datastructures.lists.StringList;
 import junit.framework.Assert;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -52,43 +51,47 @@ public class ProgressApiTests extends JerseyTest {
         // assumes user exists
 
         java.util.List<String> competences = createCompetences();
-        String[] questions = new String[] { "eine wichtige Frage?" ,  "eine wichtige Frage?2"};
-        ReflectiveQuestionData question = new ReflectiveQuestionData(questions[0],competences.get(0));
-        ReflectiveQuestionData question2 = new ReflectiveQuestionData(questions[1],competences.get(0));
-        ReflectiveQuestionData question3 = new ReflectiveQuestionData(questions[0],competences.get(1));
-        ReflectiveQuestionData question4 = new ReflectiveQuestionData(questions[1],competences.get(1));
+        String[] questions = new String[]{"eine wichtige Frage?", "eine wichtige Frage?2"};
+        ReflectiveQuestionData question = new ReflectiveQuestionData(questions[0], competences.get(0));
+        ReflectiveQuestionData question2 = new ReflectiveQuestionData(questions[1], competences.get(0));
+        ReflectiveQuestionData question3 = new ReflectiveQuestionData(questions[0], competences.get(1));
+        ReflectiveQuestionData question4 = new ReflectiveQuestionData(questions[1], competences.get(1));
 
         // create questions
         String questionCreationUrl = "/api1/competences/questions";
-        Response response = target(questionCreationUrl).request().post(Entity.entity(question, MediaType
-                .APPLICATION_JSON));
+        Response response =
+                target(questionCreationUrl).request().post(Entity.entity(question, MediaType.APPLICATION_JSON));
         assertTrue(response.getStatus() == 200);
 
-        Response response2 = target(questionCreationUrl).request().post(Entity.entity(question2, MediaType
-                .APPLICATION_JSON));
+        Response response2 =
+                target(questionCreationUrl).request().post(Entity.entity(question, MediaType.APPLICATION_JSON));
         assertTrue(response2.getStatus() == 200);
 
-        Response response3 = target(questionCreationUrl).request().post(Entity.entity(question3, MediaType
-                .APPLICATION_JSON));
+        Response response3 =
+                target(questionCreationUrl).request().post(Entity.entity(question3, MediaType
+                        .APPLICATION_JSON));
         assertTrue(response3.getStatus() == 200);
 
-        Response response4 = target(questionCreationUrl).request().post(Entity.entity(question4, MediaType
-                .APPLICATION_JSON));
+        Response response4 =
+                target(questionCreationUrl).request().post(Entity.entity(question4, MediaType
+                        .APPLICATION_JSON));
         assertTrue(response4.getStatus() == 200);
 
-        String[] answers = new String [] {"gute Antwort1" , "gute Antwort2"};
+        String[] answers = new String[]{"gute Antwort1", "gute Antwort2"};
         // create answers
-        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData = new ReflectiveQuestionAnswerData(answers[0],
-                user, questions[0], System.currentTimeMillis());
+        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData =
+                new ReflectiveQuestionAnswerData(answers[0], user, questions[0], System.currentTimeMillis(),competences.get(0));
 
-        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData2 = new ReflectiveQuestionAnswerData(answers[1],
-                user, questions[0], System.currentTimeMillis());
+        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData2 =
+                new ReflectiveQuestionAnswerData(answers[1], user, questions[0], System.currentTimeMillis(),competences.get(0));
 
-        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData3 = new ReflectiveQuestionAnswerData(answers[0],
-                user, questions[1], System.currentTimeMillis());
+        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData3 =
+                new ReflectiveQuestionAnswerData(answers[0], user, questions[1], System.currentTimeMillis(),
+                        competences.get(1));
 
-        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData4 = new ReflectiveQuestionAnswerData(answers[1],
-                user, questions[1], System.currentTimeMillis());
+        ReflectiveQuestionAnswerData reflectiveQuestionAnswerData4 =
+                new ReflectiveQuestionAnswerData(answers[1], user, questions[1], System.currentTimeMillis(),
+                        competences.get(1));
 
         java.util.List<ReflectiveQuestionAnswerData> answerDatas = new ArrayList<ReflectiveQuestionAnswerData>();
         answerDatas.add(reflectiveQuestionAnswerData);
@@ -97,14 +100,14 @@ public class ProgressApiTests extends JerseyTest {
         answerDatas.add(reflectiveQuestionAnswerData4);
 
         for (ReflectiveQuestionAnswerData answerData : answerDatas) {
-            Response r = target("/api1/competences/questions/answers").request().put(Entity.entity(answerData, MediaType
-                    .APPLICATION_JSON));
+            Response r = target("/api1/competences/questions/answers").request()
+                    .put(Entity.entity(answerData, MediaType.APPLICATION_JSON));
             assertTrue(r.getStatus() == 200);
         }
 
     }
 
-    public List<String> createCompetences()  {
+    public List<String> createCompetences() {
         ArrayList<String> result = new ArrayList<String>();
         String competenceString = "Die Studierenden vergleichen zwei Sätze anhand ihrer Bausteine";
         result.add(competenceString);
@@ -222,7 +225,7 @@ public class ProgressApiTests extends JerseyTest {
         // Anwort anlegen
         String url3 = "/api1/competences/questions/answers";
         ReflectiveQuestionAnswerData reflectiveQuestionAnswerData =
-                new ReflectiveQuestionAnswerData("ShizzleAnswer", user.getId(), question, null);
+                new ReflectiveQuestionAnswerData("ShizzleAnswer", user.getId(), question, null, competenceId);
         Response response =
                 target(url3).request().put(Entity.entity(reflectiveQuestionAnswerData, MediaType.APPLICATION_JSON));
         assertTrue(response.getStatus() == 200);

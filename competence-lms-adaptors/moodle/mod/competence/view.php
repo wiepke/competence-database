@@ -42,19 +42,15 @@ if ($id) {
     error('You must specify a course_module ID or an instance ID');
 }
 
-//$modinfo = mod_frog_get_coursemodule_info($cm);
-
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 add_to_log($course->id, 'competence', 'view', "view.php?id={$cm->id}", $competence->name, $cm->id);
 
+// END weird settings part 1
 
+// START INTERESTING DATA FOR THE APP .............................................................
 
-// INTERESTING DATA FOR THE APP .............................................................
-
-
-
-$courseId =  "'".$id."'";
+$courseId =  "'".$COURSE->id."'";
 $courseName =  "'".$COURSE->fullname."'";
 
 // get the activities
@@ -88,25 +84,14 @@ $info = "'".json_encode(array_values($modinfo_mapped))."'";
 // get roles
 
 $roleString = "'undefined'";
-
-//$roleString = "'notgiven'";
-
-//if (user_has_role_assignment($USER->id, 3)) {
-//       $roleString = "'teacher'";
-//       echo $roleString;
-//}
-
 if (!$cm = get_coursemodule_from_id('competence', $cm->id)) {
     error("Course module ID was incorrect");
 }
-
 if (has_capability('mod/competence:view', $context)) {
        $roleString = "'teacher'";
 }
 
 
-
-// TODO get activitäten
 
 // and writing it to javascript
 ?>
@@ -126,24 +111,14 @@ var courseModules = JSON.parse(<?php echo $info; ?>);
 
 // .......... weird settings  part 2............................................
 
-
-
 /// Print the page header
 $PAGE->set_url('/mod/competence/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($competence->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 echo $OUTPUT->header();
-if ($competence->intro) { // Conditions to show the intro can change to look for own settings or whatever
-    echo $OUTPUT->box(format_module_intro('competence', $competence, $cm->id), 'generalbox mod_introbox', 'competenceintro');
-}
-// .......... END weird settings............................................
 
-
-// role management
-
-
-
+// .......... END weird settings part 2............................................
 
 
 ?>
@@ -203,17 +178,13 @@ if ($competence->intro) { // Conditions to show the intro can change to look for
         <br>
         <button id="competenceDeleteButton" type="button" class="btn btn-primary">löschen</button>
 </div>
-<!-- the actual implementation start-->
+
 
 </div>
 
 <div id="roleErrorMessage" class="alert alert-error" role="alert">
         Sie müssen eine Lehrenden-Rolle haben, um diese Ansicht zu öffnen.
 </div>
-
-
-
-<!-- the actual implementation finish -->
 
 
 <?php

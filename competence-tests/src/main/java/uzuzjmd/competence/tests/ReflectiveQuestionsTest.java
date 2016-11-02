@@ -64,7 +64,7 @@ public class ReflectiveQuestionsTest extends JerseyTest {
         builder.append(url3);
         System.out.println(builder.toString());
         ReflectiveQuestionAnswerData reflectiveQuestionAnswerData = new ReflectiveQuestionAnswerData("ShizzleAnswer",
-                user.getId(), questionId, null );
+                user.getId(), questionId, null,"Kompetenz");
         Response response  = target(builder.toString()).request().put(Entity.entity(reflectiveQuestionAnswerData,
                 MediaType
                 .APPLICATION_JSON));

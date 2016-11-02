@@ -27,7 +27,7 @@ var modulesSelected = {};
         }
     });
 
-//....................................... UI STUFF
+    //.............UI STUFF ..........................
     requirejs(['jquery', 'typeahead', 'bloodhound', 'bootstrap', 'tagsinput'], function ($, a, b, c, d) {
 
         if (!(role == "teacher")) {
@@ -85,6 +85,8 @@ var modulesSelected = {};
         $('#createErrorMessage').hide();
         $('#createSuccessMessage').hide();
 
+
+        //     $("#verbInput").blur(function () {
         $("#detailsInput").focus(function () {
             var value = $("#verbInput").val();
             if (value.includes(" ")) {
@@ -144,6 +146,7 @@ var modulesSelected = {};
     });
 
 
+    /*********************** THE AJAX CALLS *********************************/
     requirejs(['jquery', 'index'], function ($, main) {
         console.log(main);
         var apiClient = new main.ApiClient();
@@ -156,7 +159,7 @@ var modulesSelected = {};
         $('#competenceCreateButton').click(function () {
             var value1 = $("#verbInput").val();
             var value2 = $("#verbInput2").val();
-            var competenceString = "Die S. " + value1 + " " + $("#detailsInput").val() + " " + value2;
+            var competenceString = ("S. " + value1 + " " + $("#detailsInput").val() + " " + value2).trim();
             var operator = value2 + value1;
             var catchwords = $('#tagsInput').tagsinput('items')
             // api call
@@ -189,6 +192,7 @@ var modulesSelected = {};
                 }
                 ;
                 console.log("sending competence" + competenceString);
+                // sending the competence
                 api.addCompetence(competenceString, {body: competenceOpts2}, function (a, b, c) {
                     if (c.statusText == "OK") {
                         console.log("competence created");
@@ -201,10 +205,12 @@ var modulesSelected = {};
                                 ]
                             }
                         };
+                        // add the course to the db
                         api.addCourse(courseId, courseBody, function (a, b, c) {
                             if (c.statusText == "OK") {
                                 for (i = 0; i < activitiesSuggested.length; i++) {
                                     var activityToSend = activitiesSuggested[i];
+                                    // add course activities
                                     api.addActivity({body: activityToSend}, function (a, b, c) {
                                         for (y = 0; y < activitiesSuggested.length; y++) {
                                             var activityToSend2 = activitiesSuggested[y];
@@ -215,6 +221,7 @@ var modulesSelected = {};
                                                         "question": questions[x],
                                                         "competenceId": competenceString
                                                     };
+                                                    // add reflective questions
                                                     api.addReflectiveQuestionToCompetence({"body": question}, function (a, b, c) {
                                                         console.info("activity has been added");
                                                         $('#createSuccessMessage').show();
@@ -232,13 +239,10 @@ var modulesSelected = {};
                         $('#createErrorMessage').show();
                     }
                 });
-                // $('#createSuccessMessage').show();
-                // ...............................................................................
             }
         });
 
         // lernziele bearbeiten
-
         api.getCompetences({"courseId": courseId}, function (error, data, response) {
             console.log("getting competences");
             var competences = response.body;

@@ -71,7 +71,9 @@ public class CourseApiImpl implements uzuzjmd.competence.api.CourseApi {
     }
 
     private Response addCourseIntern(@PathParam("courseId") String courseId, CourseData data) throws Exception {
+        // TODO use converter 
         CourseContext courseContext = new CourseContext(courseId);
+        courseContext.printableName = data.getPrintableName();
         courseContext.persist();
         if (data.getCompetences() != null && !data.getCompetences().isEmpty()) {
             for (String string: data.getCompetences()) {

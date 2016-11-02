@@ -11,15 +11,17 @@ public class ReflectiveQuestionAnswerData {
     private String userId;
     private String questionId;
     private Long datecreated;
+    private String competenceId;
 
     public ReflectiveQuestionAnswerData() {
     }
 
-    public ReflectiveQuestionAnswerData(String text, String userId, String questionId, Long datecreated) {
+    public ReflectiveQuestionAnswerData(String text, String userId, String questionId, Long datecreated, String competenceId) {
         this.text = text;
         this.userId = userId;
         this.questionId = questionId;
         this.datecreated = datecreated;
+        this.competenceId = competenceId;
     }
 
     public String getText() {
@@ -52,5 +54,13 @@ public class ReflectiveQuestionAnswerData {
 
     public void setDatecreated(Long datecreated) {
         this.datecreated = datecreated;
+    }
+
+    public String getCompetenceId() {
+        return competenceId;
+    }
+
+    public void setCompetenceId(String competenceId) {
+        this.competenceId = competenceId;
     }
 }

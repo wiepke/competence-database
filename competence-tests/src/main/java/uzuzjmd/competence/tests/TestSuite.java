@@ -18,6 +18,7 @@ import uzuzjmd.competence.persistence.dao.DBInitializer;
         LearningProjectTemplateAPITest.class,
         SelectedLearningTemplateDAOTest.class,
         SubCompetencenTest.class,
+        ProgressApiTests.class,
 })
 
 /*ProgressApiTests.class,*/

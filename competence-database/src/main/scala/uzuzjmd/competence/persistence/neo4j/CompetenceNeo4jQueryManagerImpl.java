@@ -350,7 +350,7 @@ public class CompetenceNeo4jQueryManagerImpl extends CompetenceNeo4JQueryManager
         }
         builder.append(" MATCH (a:ReflectiveQuestionAnswer)-[r2:AnswerForReflectiveQuestion]->(q)");
         builder.append(" MATCH (u:User{id:'" + userId + "'})-[r3:UserOfReflectiveQuestionAnswer]->(a)");
-        builder.append(" RETURN a.id,a.text,q.id,a.datecreated");
+        builder.append(" RETURN a.id,a.text,q.id,a.datecreated,n.id");
 
         String exampleQuery = builder.toString();
         ArrayList<ArrayList<String>> arrayLists = issueNeo4JRequestArrayListArrayList(builder.toString());
@@ -361,12 +361,12 @@ public class CompetenceNeo4jQueryManagerImpl extends CompetenceNeo4JQueryManager
             ArrayList<String> actualList = (ArrayList) arrayLists;
             reflectiveQuestionAnswerHolder.getData()
                     .add(new ReflectiveQuestionAnswerData(actualList.get(1), userId, actualList.get(2),
-                            Long.parseLong(actualList.get(3))));
+                            Long.parseLong(actualList.get(3)),actualList.get(4)));
         } else {
             for (ArrayList o : arrayLists) {
                 ReflectiveQuestionAnswerData reflectiveQuestionData =
                         new ReflectiveQuestionAnswerData(o.get(1).toString(), userId, o.get(0).toString(),
-                                Long.parseLong(o.get(3).toString()));
+                                Long.parseLong(o.get(3).toString()),o.get(4).toString());
                 reflectiveQuestionAnswerHolder.getData().add(reflectiveQuestionData);
             }
         }

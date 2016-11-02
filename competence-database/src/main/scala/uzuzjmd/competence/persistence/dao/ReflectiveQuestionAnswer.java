@@ -62,6 +62,11 @@ public class ReflectiveQuestionAnswer extends AbstractReflectiveQuestionAnswer i
     }
 
     @Override
+    public String getCompetenceId() {
+        return "";
+    }
+
+    @Override
     public Dao persist() throws Exception {
         Dao result = super.persist();
         createEdgeWith(Edge.AnswerForReflectiveQuestion,question);

@@ -2,6 +2,10 @@
 
 }
 
+#questionsArea {
+    width: 60% !important;
+}
+
 .tagsInput2 {
     width: 600px !important;
     height: 400px !important;
@@ -19,11 +23,13 @@
     margin-left: 10px;
     margin-right: 10px;
     vertical-align: middle !important;
+    height: 25px;
 }
 
 
 #verbInput2 {
     width: 80px;
+    height: 25px;
 }
 
 /* CSS REQUIRED */

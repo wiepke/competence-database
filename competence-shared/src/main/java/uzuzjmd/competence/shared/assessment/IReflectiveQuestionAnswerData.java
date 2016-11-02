@@ -10,4 +10,5 @@ public interface IReflectiveQuestionAnswerData {
     void setText(String text);
     void setQuestionId(String questionid);
     void setUserId(String userId);
+    String getCompetenceId();
 }
