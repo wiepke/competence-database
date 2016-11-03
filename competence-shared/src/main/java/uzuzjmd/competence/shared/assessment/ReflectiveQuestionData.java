@@ -9,14 +9,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ReflectiveQuestionData {
     private String question;
     private String competenceId;
+    private String questionId;
 
     public ReflectiveQuestionData() {
     }
 
     public ReflectiveQuestionData(
-            String question, String competenceId) {
+            String question, String competenceId, String questionId) {
         this.question = question;
         this.competenceId = competenceId;
+        this.questionId = questionId;
     }
 
     public String getQuestion() {
@@ -33,5 +35,13 @@ public class ReflectiveQuestionData {
 
     public void setCompetenceId(String competenceId) {
         this.competenceId = competenceId;
+    }
+
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 }

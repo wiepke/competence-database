@@ -31,6 +31,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dehne on 11.04.2016.
@@ -299,15 +300,21 @@ public class CompetenceApiImpl implements uzuzjmd.competence.api.CompetenceApi {
     @Path("competences/{competenceId}/questions")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public StringList getReflectiveQuestionsForCompetence(@PathParam("competenceId") String competenceId) {
+    public ReflectiveQuestionData[] getReflectiveQuestionsForCompetence(@PathParam("competenceId") String competenceId) {
         Competence competence = new Competence(competenceId);
         try {
-            java.util.List<String> result = competence.getAssociatedDaoIdsAsRange(Edge.ReflectiveQuestionForCompetence);
-            return new StringList(result);
+            List<ReflectiveQuestionData> datas = new ArrayList<>();
+            List<ReflectiveQuestion> result = competence.getAssociatedDaosAsRange(Edge.ReflectiveQuestionForCompetence,
+                    ReflectiveQuestion.class);
+            for (ReflectiveQuestion reflectiveQuestion : result) {
+                datas.add(new ReflectiveQuestionData(((ReflectiveQuestion)reflectiveQuestion.getFullDao()).question,
+                        competenceId, reflectiveQuestion.getId()));
+            }
+            return datas.toArray(new ReflectiveQuestionData[0]);
         } catch (Exception e) {
             Response.serverError().entity(e.getMessage()).build();
         }
-        return new StringList();
+        return new ReflectiveQuestionData[0];
     }
 
     @ApiOperation(value = "get answers to this reflective question")
