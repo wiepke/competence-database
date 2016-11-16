@@ -139,9 +139,8 @@ var modulesSelected = {};
         }
 
         $('#defaultQuestionsAdder').click(function () {
-            $('#questionsArea').text(
-                "Wie motiviert bist du das Lernziel zu erreichen?;Warum möchtest du das Lernziel erreichen?;Welches Vorwissen hast du, welches dir zum Erreichen des Ziels dient?;Was wird ein Ergebnis deines Lernens sein?;Wie möchtest du das Lernziel erreichen?;Wen kannst du Fragen, wenn du nicht weiterkommst?;Kannst du einfach im Internet suchen um weiterzukommen?;Findest du, dass das Lernziel zu einfach ist?"
-            );
+            var formerValue = $('#questionsArea').val();
+            $('#questionsArea').val(formerValue+"Wie motiviert bist du das Lernziel zu erreichen?;Warum möchtest du das Lernziel erreichen?;Welches Vorwissen hast du, welches dir zum Erreichen des Ziels dient?;Was wird ein Ergebnis deines Lernens sein?;Wie möchtest du das Lernziel erreichen?;Wen kannst du Fragen, wenn du nicht weiterkommst?;Kannst du einfach im Internet suchen um weiterzukommen?;Findest du, dass das Lernziel zu einfach ist?");
         });
     });
 
@@ -208,31 +207,34 @@ var modulesSelected = {};
                         // add the course to the db
                         api.addCourse(courseId, courseBody, function (a, b, c) {
                             if (c.statusText == "OK") {
+                                console.info("sending activities");
                                 for (i = 0; i < activitiesSuggested.length; i++) {
                                     var activityToSend = activitiesSuggested[i];
                                     // add course activities
+                                    console.info("sending activities");
                                     api.addActivity({body: activityToSend}, function (a, b, c) {
                                         for (y = 0; y < activitiesSuggested.length; y++) {
                                             var activityToSend2 = activitiesSuggested[y];
                                             api.addActivity_0(competenceString, activityToSend2, function (a, b, c) {
-                                                var questions = $('#questionsArea').text().split(";");
-                                                for (x = 0; x < questions.length; x++) {
-                                                    var question = {
-                                                        "question": questions[x],
-                                                        "competenceId": competenceString
-                                                    };
-                                                    // add reflective questions
-                                                    api.addReflectiveQuestionToCompetence({"body": question}, function (a, b, c) {
-                                                        console.info("activity has been added");
-                                                        $('#createSuccessMessage').show();
-                                                    });
-                                                }
+                                                console.info("activity has been added");
                                             });
                                         }
                                     });
                                 }
-                            } else {
-                                $('#createErrorMessage').show();
+                                console.info("sending questions");
+                                var questions = $('#questionsArea').val().split(";");
+                                for (x = 0; x < questions.length; x++) {
+                                    var question = {
+                                        "question": questions[x],
+                                        "competenceId": competenceString
+                                    };
+                                    // add reflective questions
+                                    api.addReflectiveQuestionToCompetence({"body": question}, function (a, b, c) {
+                                        console.info("question has been added");
+                                        $('#createSuccessMessage').show();
+                                        $('#createErrorMessage').hide();
+                                    });
+                                }
                             }
                         });
                     } else {
@@ -344,6 +346,3 @@ var modulesSelected = {};
             }
         });
     });
-
-
-
